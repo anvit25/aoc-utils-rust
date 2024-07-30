@@ -1,4 +1,4 @@
-use std::fmt::{Display, Formatter, Debug};
+use std::fmt::{Debug, Display, Formatter};
 
 #[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Hash)]
 pub struct Point3 {
@@ -55,7 +55,6 @@ impl std::ops::AddAssign<i32> for Point3 {
     }
 }
 
-
 impl std::ops::Sub for Point3 {
     type Output = Point3;
     fn sub(self, other: Point3) -> Point3 {
@@ -104,7 +103,7 @@ mod tests {
     }
 
     #[test]
-    fn negate(){
+    fn negate() {
         let p1 = Point3::new(1, 2, 3);
         let p2 = Point3::new(-1, -2, -3);
         assert_eq!(-p1, p2);

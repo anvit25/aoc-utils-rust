@@ -29,7 +29,7 @@ impl Point {
     pub fn up() -> Point {
         Point::new(0, -1)
     }
-    
+
     pub fn down() -> Point {
         Point::new(0, 1)
     }

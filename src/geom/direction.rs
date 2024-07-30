@@ -18,6 +18,15 @@ impl Direction {
             Direction::Down => Point::new(0, -1),
         }
     }
+
+    pub fn xy_reflect(self) -> Direction {
+        match self {
+            Direction::Left => Direction::Down,
+            Direction::Right => Direction::Up,
+            Direction::Up => Direction::Right,
+            Direction::Down => Direction::Left,
+        }
+    }
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
