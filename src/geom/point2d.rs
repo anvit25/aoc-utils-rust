@@ -10,6 +10,10 @@ pub struct Point {
 }
 
 impl Point {
+    pub fn range(start: Point, end: Point) -> impl Iterator<Item=Point> {
+        (start.y..end.y).flat_map(move |y| (start.x..end.x).map(move |x| Point::new(x, y)))
+    }
+
     pub fn new(x: i32, y: i32) -> Point {
         Point { x, y }
     }
@@ -190,5 +194,22 @@ mod tests {
         assert_eq!(p.cmp(&Point::new(4, 7)), cmp::Ordering::Less);
         assert_eq!(p.cmp(&Point::new(5, 6)), cmp::Ordering::Less);
         assert_eq!(p.cmp(&Point::new(30, 5)), cmp::Ordering::Greater);
+    }
+
+    #[test]
+    fn test_point_range() {
+        let start = Point::new(1, 1);
+        let end = Point::new(3, 3);
+        let mut iter = Point::range(start, end);
+        assert_eq!(iter.next(), Some(Point::new(1, 1)));
+        assert_eq!(iter.next(), Some(Point::new(2, 1)));
+        assert_eq!(iter.next(), Some(Point::new(3, 1)));
+        assert_eq!(iter.next(), Some(Point::new(1, 2)));
+        assert_eq!(iter.next(), Some(Point::new(2, 2)));
+        assert_eq!(iter.next(), Some(Point::new(3, 2)));
+        assert_eq!(iter.next(), Some(Point::new(1, 3)));
+        assert_eq!(iter.next(), Some(Point::new(2, 3)));
+        assert_eq!(iter.next(), Some(Point::new(3, 3)));
+        assert_eq!(iter.next(), None);
     }
 }

@@ -1,14 +1,15 @@
 use super::point2d::Point;
 use std::ops;
 
-struct Grid<T> {
+#[derive(Debug)]
+pub struct Grid<T> {
     pub data: Vec<Vec<T>>,
     pub width: usize,
     pub height: usize,
 }
 
 impl<T: Clone> Grid<T> {
-    fn new(width: usize, height: usize, default: T) -> Self {
+    pub fn new(width: usize, height: usize, default: T) -> Self {
         Grid {
             data: vec![vec![default; width]; height],
             width,
@@ -18,10 +19,11 @@ impl<T: Clone> Grid<T> {
 }
 
 impl<T: Default + Clone> Grid<T> {
-    fn new_default(width: usize, height: usize) -> Self {
+    pub fn new_default(width: usize, height: usize) -> Self {
         Grid::new(width, height, T::default())
     }
 }
+
 
 impl<T> ops::Index<(usize, usize)> for Grid<T> {
     type Output = T;
@@ -39,17 +41,25 @@ impl<T> ops::IndexMut<(usize, usize)> for Grid<T> {
 impl<T> ops::Index<Point> for Grid<T> {
     type Output = T;
     fn index(&self, point: Point) -> &T {
+        assert!(self.in_bounds(point));
         self.index((point.y as usize, point.x as usize))
     }
 }
 
 impl<T> ops::IndexMut<Point> for Grid<T> {
     fn index_mut(&mut self, point: Point) -> &mut T {
+        assert!(self.in_bounds(point));
         self.index_mut((point.y as usize, point.x as usize))
     }
 }
 
 impl<T> Grid<T> {
+    pub fn from_vec(data: Vec<Vec<T>>) -> Self {
+        let height = data.len();
+        let width = data[0].len();
+        Grid { data, width, height }
+    }
+    
     pub fn in_bounds(&self, point: Point) -> bool {
         let x = point.x;
         let y = point.y;
