@@ -37,3 +37,11 @@ pub fn download_input(day: u8, year: u32) -> Result<String, Box<dyn Error>> {
     file.write_all(res.as_bytes())?;
     Ok(format!("Input for Day {day} downloaded successfully."))
 }
+
+pub fn lines_from_file(filename: &str) -> Vec<String> {
+    std::fs::read_to_string(filename)
+        .expect(format!("Cant read {filename}").as_str())
+        .lines()
+        .map(|s| s.to_string())
+        .collect()
+}
